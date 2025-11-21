@@ -13,10 +13,11 @@ import { IOrderOnlineStartResponse } from './find-order-online.interface';
 import { IOrderItemSend } from './order-items-send.interface';
 import { IOrderOnline } from './order-online';
 import { IOrderOnlineItem } from './order-online-item.interface';
+import { ISellerWithCell } from './seller-with-cell.interface';
 import { ISeller } from './seller.interface';
 import { IStepAddressOrderType } from './step-address-order-type.interface';
 
 export type {
-  ICell, ICellNetwork, ICotentStepAddressOrderType, ICustomerAddressBasic, ICustomerAddressFull, ICustomerBasic, ICustomerFull, ICustomerFullWithAddress, ICustomerRetrieve, IOrderItemSend, IOrderOnline, IOrderOnlineItem, IOrderOnlineStartResponse, ISeller, IStepAddressOrderType
+  ICell, ICellNetwork, ICotentStepAddressOrderType, ICustomerAddressBasic, ICustomerAddressFull, ICustomerBasic, ICustomerFull, ICustomerFullWithAddress, ICustomerRetrieve, IOrderItemSend, IOrderOnline, IOrderOnlineItem, IOrderOnlineStartResponse, ISeller, ISellerWithCell, IStepAddressOrderType
 };
 

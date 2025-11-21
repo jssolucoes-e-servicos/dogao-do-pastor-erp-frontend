@@ -1,95 +1,76 @@
-"use client"
+'use client';
+import { CommandQueueStatisticsPending } from '@/components/commands/CommandQueueStatisticsPending';
+import { Button } from '@/components/ui/button';
+import { fetcherGet } from '@/lib/fetcher';
+import useSWR from 'swr';
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChefHat, Clock, DollarSign, MapPin, User } from "lucide-react"
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-const pedidosPendentes = [
-  {
-    id: "#001",
-    cliente: "João Silva",
-    endereco: "Rua das Flores, 123",
-    itens: ["X-Bacon", "Batata Frita", "Coca-Cola"],
-    valor: 35.5,
-    horario: "19:30",
-    tempoEspera: "5 min",
-  },
-  {
-    id: "#005",
-    cliente: "Carlos Lima",
-    endereco: "Av. Central, 654",
-    itens: ["X-Calabresa", "Suco Natural"],
-    valor: 30.0,
-    horario: "19:35",
-    tempoEspera: "2 min",
-  },
-]
+export default function PendingQueuePage() {
+  const { data, isLoading, error, mutate } = useSWR('commands/pending', fetcherGet);
 
-export default function FilaPendentesPage() {
+  // data: agrupado por slot de horário
+  const allCommands =
+    data
+      ? Object.values(data).flat()
+      : [];
+
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Fila - Pedidos Pendentes</h1>
-          <p className="text-sm text-muted-foreground">
-            {pedidosPendentes.length} pedido{pedidosPendentes.length !== 1 ? "s" : ""} aguardando preparo
-          </p>
-        </div>
-        <Badge className="bg-yellow-600 text-white text-lg px-4 py-2">{pedidosPendentes.length}</Badge>
-      </div>
+    <div className="max-w-5xl mx-auto py-6">
+      <CommandQueueStatisticsPending commands={allCommands} />
+      <h1 className="text-xl font-bold mb-1">Comandas Pendentes</h1>
 
-      <div className="space-y-4">
-        {pedidosPendentes.map((pedido) => (
-          <Card key={pedido.id} className="bg-card border-border border-l-4 border-l-yellow-600">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg text-card-foreground flex items-center justify-between">
-                <span className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-yellow-600" />
-                  {pedido.horario} - {pedido.id}
-                </span>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{pedido.tempoEspera}</Badge>
-                  <Button size="sm" className="bg-primary hover:bg-primary/90">
-                    <ChefHat className="w-4 h-4 mr-2" />
-                    Iniciar Preparo
-                  </Button>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <User className="w-4 h-4" />
-                {pedido.cliente}
-              </div>
-              <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span className="break-words">{pedido.endereco}</span>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm font-medium">Itens:</p>
-                <ul className="text-sm text-muted-foreground">
-                  {pedido.itens.map((item, index) => (
-                    <li key={index}>• {item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex items-center gap-1 pt-2 border-t border-border">
-                <DollarSign className="w-4 h-4 text-green-600" />
-                <span className="text-lg font-bold text-green-600">R$ {pedido.valor.toFixed(2)}</span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {pedidosPendentes.length === 0 && (
-        <div className="text-center py-12">
-          <Clock className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">Nenhum pedido pendente no momento.</p>
-        </div>
+      {isLoading && <div>Carregando fila...</div>}
+      {error && <div>Erro ao buscar dados.</div>}
+      {!isLoading && !error && allCommands.length === 0 && (
+        <div>Nenhuma comanda pendente.</div>
       )}
-    </div>
-  )
-}
 
+      {data &&
+        Object.entries(data).map(([slot, commands]: [string, any[]]) => (
+          <section key={slot} className="mb-3">
+            <div className="font-semibold text-md text-muted-foreground mb-1">
+              Produzir às {slot}
+            </div>
+            <ul className="divide-y border rounded bg-background">
+              {commands.map((command: any) => (
+                <li key={command.id} className="flex items-center px-3 py-2 gap-3 hover:bg-accent group">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold">
+                      {command.order?.customer?.name || 'Sem nome'}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {command.sequentialId && <>#{command.sequentialId} &middot; </>}
+                      {command.order?.deliveryOption === 'delivery' && 'Delivery'}
+                      {command.order?.deliveryOption === 'pickup' && 'Retirada'}
+                      {command.order?.deliveryOption === 'donate' && 'Doação'}
+                      {command.order?.deliveryOption === 'scheduled' && 'Programada'}
+                      {command.order?.deliveryTime && (
+                        <span> &middot; Entrega: {command.order.deliveryTime}</span>
+                      )}
+                      <span>
+                        {command.order?.customer?.phone && (
+                          <> &middot; {command.order.customer.phone}</>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="ml-auto"
+                    onClick={async () => {
+                      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/commands/${command.id}/start-production`, { method: 'PATCH' });
+                      mutate();
+                    }}
+                  >
+                    Iniciar produção
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+    </div>
+  );
+}

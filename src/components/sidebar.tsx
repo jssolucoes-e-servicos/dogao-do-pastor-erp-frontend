@@ -44,6 +44,16 @@ const navItems: NavItem[] = [
     icon: Users,
   },
   {
+    title: "Comandas",
+    href: "/app/comandas",
+    icon: Clock,
+    children: [
+      { title: "Listagem de Comandas", href: "/app/comandas", icon: Clock },
+      { title: "Comanda Manual", href: "/app/comandas/manual", icon: Clock },
+      { title: "Impressao", href: "/app/comandas/impressao", icon: Clock },
+    ],
+  },
+  {
     title: "Vendedores",
     href: "/app/vendedores",
     icon: Users,
@@ -73,11 +83,11 @@ const navItems: NavItem[] = [
     href: "/app/filas",
     icon: Clock,
     children: [
-      { title: "Pendentes", href: "/app/filas/pendentes", icon: Clock, badge: "3" },
-      { title: "Em Preparo", href: "/app/filas/preparo", icon: Clock, badge: "5" },
-      { title: "Prontos", href: "/app/filas/prontos", icon: Clock, badge: "2" },
-      { title: "Em Entrega", href: "/app/filas/entrega", icon: Clock, badge: "4" },
-      { title: "Entregues", href: "/app/filas/entregues", icon: Clock },
+      { title: "Pendentes", href: "/app/filas/pendentes", icon: Clock },
+      { title: "Em Produção", href: "/app/filas/producao", icon: Clock },//, badge: "5" },
+      { title: "Para Retirada", href: "/app/filas/retirada", icon: Clock },
+      { title: "Para Entrega", href: "/app/filas/entrega", icon: Clock },
+
     ],
   },
   {
