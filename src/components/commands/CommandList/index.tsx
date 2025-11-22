@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ICommand } from '@/interfaces/command';
 import { fetcherGet } from '@/lib/fetcher';
 import useSWR from 'swr';
 import CommandGroup from '../CommandGroup';
@@ -30,8 +32,8 @@ export default function CommandList({ filter }: CommandListProps) {
 
   // Agrupamento
   const grouped: Record<string, any[]> = {};
-  comandas.forEach(cmd => {
-    const slot = getProductionSlot(cmd.order?.scheduledTime ?? cmd.order?.deliveryTime ?? cmd.createdAt);
+  comandas.forEach((cmd: ICommand) => {
+    const slot = getProductionSlot(cmd.order?.deliveryTime);
     if (!grouped[slot]) grouped[slot] = [];
     grouped[slot].push(cmd);
   });

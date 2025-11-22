@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -7,22 +8,36 @@ import { fetcherGet } from "@/lib/fetcher";
 import { useState } from "react";
 import useSWR from "swr";
 
+export interface ICustomer {
+  id: string;
+  name: string;
+  phone?: string;
+  // Outros campos se quiser
+}
+
+export interface IOrderOnline {
+  id: string;
+  customer?: ICustomer;
+  deliveryTime?: string | null;
+  // Outros campos relevantes se precisar adicionar
+}
+
 export default function AlteraHorarioPedidosPage() {
   const [search, setSearch] = useState('');
   const [modalPedido, setModalPedido] = useState<any | null>(null);
   const [novoHorario, setNovoHorario] = useState('');
 
   // Busca todos pedidos pagos/delivery
-  const { data: pedidos, isLoading } = useSWR('order-online2/delivery', fetcherGet);
+  const { data: pedidos, isLoading } = useSWR('order-online/delivery', fetcherGet);
 
   // Filtra pelo telefone digitado
-  const pedidosFiltrados = pedidos && search
-    ? pedidos.filter((p: any) => p.customer?.phone?.toLowerCase().includes(search.toLowerCase()))
+  const pedidosFiltrados: IOrderOnline[] = pedidos && search
+    ? pedidos.filter((p: IOrderOnline) => p.customer?.phone?.toLowerCase().includes(search.toLowerCase()))
     : [];
 
   async function salvarHorario() {
     if (!modalPedido) return;
-    await fetch(`/api/order-online/${modalPedido.id}/delivery-time`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}order-online/${modalPedido.id}/delivery-time`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ deliveryTime: novoHorario })
@@ -42,7 +57,7 @@ export default function AlteraHorarioPedidosPage() {
       <div className="mt-6 space-y-4">
         {isLoading && <div>Carregando pedidos...</div>}
         {pedidosFiltrados && pedidosFiltrados.length === 0 && <div>Nenhum pedido encontrado para este telefone.</div>}
-        {pedidosFiltrados.map(pedido => (
+        {pedidosFiltrados.map((pedido: IOrderOnline) => (
           <div key={pedido.id} className="bg-card rounded-lg p-4 flex justify-between items-center gap-2">
             <div>
               <div className="font-bold">{pedido.customer?.name}</div>

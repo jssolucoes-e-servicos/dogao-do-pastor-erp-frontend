@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { CommandQueueStatisticsPending } from '@/components/commands/CommandQueueStatisticsPending';
 import { Button } from '@/components/ui/button';
 import { fetcherGet } from '@/lib/fetcher';
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
-
 export default function PendingQueuePage() {
-  const { data, isLoading, error, mutate } = useSWR('commands/pending', fetcherGet);
+  const { data, isLoading, error, mutate } = useSWR<Record<string, any[]>>('commands/pending', fetcherGet);
 
   // data: agrupado por slot de horário
   const allCommands =
@@ -25,7 +24,7 @@ export default function PendingQueuePage() {
       {!isLoading && !error && allCommands.length === 0 && (
         <div>Nenhuma comanda pendente.</div>
       )}
-
+      {console.log(data)}
       {data &&
         Object.entries(data).map(([slot, commands]: [string, any[]]) => (
           <section key={slot} className="mb-3">

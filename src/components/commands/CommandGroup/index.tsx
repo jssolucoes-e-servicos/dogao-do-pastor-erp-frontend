@@ -1,8 +1,10 @@
+
+import { ICommand } from '@/interfaces/command';
 import CommandCard from '../CommandCard';
 
 interface CommandGroupProps {
   time: string;
-  commands: any[];
+  commands: ICommand[];
 }
 
 export default function CommandGroup({ time, commands }: CommandGroupProps) {

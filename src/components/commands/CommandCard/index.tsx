@@ -1,6 +1,8 @@
-import { Card, CardContent } from "@/components/ui/card";
 
-interface CommandCardProps { command: any; }
+import { Card, CardContent } from "@/components/ui/card";
+import { ICommand } from "@/interfaces/command";
+
+interface CommandCardProps { command: ICommand; }
 
 export default function CommandCard({ command }: CommandCardProps) {
   return (
@@ -8,8 +10,8 @@ export default function CommandCard({ command }: CommandCardProps) {
       <CardContent className="py-4 px-5 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-2">
           <span className="text-xs font-semibold text-muted-foreground">
-            {command.order?.scheduledTime &&
-              new Date(command.order.scheduledTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+            {command.order?.deliveryTime &&
+              new Date(command.order.deliveryTime).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
           </span>
           <span
             className={[

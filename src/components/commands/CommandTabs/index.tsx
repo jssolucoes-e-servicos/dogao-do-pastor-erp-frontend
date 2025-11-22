@@ -1,13 +1,13 @@
-// src/components/commands/CommandTabs/index.tsx
-
 'use client';
 
+type CommandTab = 'delivery' | 'pickup' | 'scheduled';
+
 interface CommandTabsProps {
-  selected: string;
-  onSelect: (tab: string) => void;
+  selected: CommandTab;
+  onSelect: (tab: CommandTab) => void;
 }
 
-const tabs = [
+const tabs: { label: string; value: CommandTab }[] = [
   { label: 'Entregas', value: 'delivery' },
   { label: 'Retiradas', value: 'pickup' },
   { label: 'Retirada Programada', value: 'scheduled' }

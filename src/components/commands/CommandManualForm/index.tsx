@@ -9,7 +9,11 @@ import { ISellerWithCell } from "@/interfaces";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-
+interface IDogaoGroupedItem {
+  key: string;
+  removedIngredients: string[];
+  quantity: number;
+}
 // Novo componente interno para os itens personalizados
 function DogaoItemsForm({ items, onChange }: { items: { removedIngredients: string[] }[], onChange: (i: { removedIngredients: string[] }[]) => void }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -29,10 +33,10 @@ function DogaoItemsForm({ items, onChange }: { items: { removedIngredients: stri
     onChange([...items, { removedIngredients }]);
     setModalOpen(false);
   }
-  function handleIncrement(group) {
+  function handleIncrement(group: IDogaoGroupedItem) {
     onChange([...items, { removedIngredients: group.removedIngredients }]);
   }
-  function handleDecrement(group) {
+  function handleDecrement(group: IDogaoGroupedItem) {
     const idx = items.map(i => i.removedIngredients.join('|')).lastIndexOf(group.key);
     if (idx > -1) {
       const copy = [...items];
@@ -40,7 +44,7 @@ function DogaoItemsForm({ items, onChange }: { items: { removedIngredients: stri
       onChange(copy);
     }
   }
-  function handleRemoveGroup(group) {
+  function handleRemoveGroup(group: IDogaoGroupedItem) {
     onChange(items.filter(i => i.removedIngredients.join('|') !== group.key));
   }
 

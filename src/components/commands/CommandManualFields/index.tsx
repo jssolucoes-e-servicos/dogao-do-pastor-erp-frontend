@@ -1,8 +1,10 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ISellerWithCell } from "@/interfaces";
+import { IAddress } from "@/interfaces/command";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AddressSelect } from "../AddressSelect";
@@ -15,7 +17,17 @@ export default function CommandManualFields({
   seller: ISellerWithCell;
   onResetSeller: () => void;
 }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    customerName: string;
+    cpf: string;
+    phone: string;
+    deliveryOption: string;
+    scheduledTime: string;
+    address: IAddress;
+    addresses: IAddress[];
+    observation: string;
+    items: { removedIngredients: string[] }[];
+  }>({
     customerName: "",
     cpf: "",
     phone: "",

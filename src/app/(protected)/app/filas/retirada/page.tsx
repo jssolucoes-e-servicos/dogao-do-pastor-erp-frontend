@@ -1,4 +1,4 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import CommandCard from '@/components/commands/CommandCard';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ export default function PickupQueuePage() {
               size="sm"
               className="absolute top-2 right-2"
               onClick={async () => {
-                await fetch(`/commands/${command.id}/delivered`, { method: 'PATCH' });
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/commands/${command.id}/delivered`, { method: 'PATCH' });
                 mutate();
               }}
             >Marcar como retirado</Button>

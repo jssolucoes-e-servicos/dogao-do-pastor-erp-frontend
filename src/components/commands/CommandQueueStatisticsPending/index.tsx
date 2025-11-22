@@ -1,6 +1,8 @@
+
+import { ICommand } from "@/interfaces/command";
 import { Dog, Package, ShoppingBasket, Truck } from "lucide-react";
 
-export function CommandQueueStatisticsPending({ commands }: { commands: any[] }) {
+export function CommandQueueStatisticsPending({ commands }: { commands: ICommand[] }) {
   const totalCommands = commands.length;
   // Soma quantidade de dogs em todas as comandas
   const totalDogs = commands.reduce((acc, c) =>

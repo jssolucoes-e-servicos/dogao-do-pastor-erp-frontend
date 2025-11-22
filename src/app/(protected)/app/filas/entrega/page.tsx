@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import CommandCard from '@/components/commands/CommandCard';
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ export default function DeliveryQueuePage() {
               onClick={async () => {
                 // Exemplo: abrir modal para montar rota/atribuir entregador
                 // Aqui, só marcando como expedição para simplificar:
-                await fetch(`/commands/${command.id}/to-expedition`, { method: 'PATCH' });
+                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/commands/${command.id}/to-expedition`, { method: 'PATCH' });
                 mutate();
               }}
             >

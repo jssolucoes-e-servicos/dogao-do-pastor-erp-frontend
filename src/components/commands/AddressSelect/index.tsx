@@ -1,6 +1,8 @@
+
 'use client';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { IAddress } from '@/interfaces/command';
 
 export function AddressSelect({
   addresses,
@@ -10,8 +12,8 @@ export function AddressSelect({
   isCreating,
   onChange
 }: {
-  addresses: any[];
-  address: any;
+  addresses: IAddress[];
+  address: IAddress;
   onSelect: (id: string) => void;
   onCreate: () => void;
   isCreating: boolean;
