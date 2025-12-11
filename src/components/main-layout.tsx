@@ -3,12 +3,19 @@
 import type React from "react"
 
 import { Sidebar } from "@/components/sidebar"
+import { useAuth } from "@/contexts/auth-context"
 
 interface MainLayoutProps {
   children: React.ReactNode
 }
 
+
+
 export function MainLayout({ children }: MainLayoutProps) {
+  const { user } = useAuth();
+
+  console.clear();
+  console.log(user);
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
