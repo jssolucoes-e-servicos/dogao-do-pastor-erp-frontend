@@ -1,17 +1,14 @@
-import { ICellNetwork } from '../../../customers/src/interfaces/cell-network.inteface';
+import { ICell } from "./cell.interface";
+import { ISeller } from "./seller.interface";
 export interface IUser {
   id: string;
-  name: Jackson Samuel Xavier dos Santos,
-  username: jacksonsantos,
-  active: true,
-  createdAt: 2025-10-23T18:08:21.480Z,
-  updatedAt: 2025-11-11T00:52:27.043Z,
-  deletedAt: null,
-  Seller: [],
-  Cell: [],
-  CellNetwork: ICellNetwork[],
-  DeliveryPerson: IDeliveryPerson[],
-  userRoles: IUserRole[],
+  name: string;
+  username: string;
+  Seller: ISeller[];
+  Cell: ICell[];
+  CellNetwork: ICellNetwork[];
+  DeliveryPerson: IDeliveryPerson[];
+  userRoles: IUserRole[];
   roles: string[];
   permissions: [];
 }
@@ -23,7 +20,7 @@ interface IUserRole {
   active: boolean;
   createdAt: string;
   updatedAt: string;
-  role: IRole
+  role: IRole;
 }
 
 interface IRole {
@@ -51,13 +48,13 @@ interface IDeliveryPerson {
 }
 
 interface ICellNetwork {
-      id: string;
-      name: string;
-      supervisorName: string;
-      phone: string;
-      userId: string;
-      active: boolean;
-      createdAt: string;
-      updatedAt: string;
-      deletedAt: string |null;
-    }
+  id: string;
+  name: string;
+  supervisorName: string;
+  phone: string;
+  userId: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
